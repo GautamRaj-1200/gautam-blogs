@@ -3,7 +3,7 @@ import Link from "next/link";
 import BlogPostCard from "@/components/BlogPostCard";
 import Footer from "@/components/Footer";
 import type { Blog } from "@prisma/client";
-import { clerkClient } from "@clerk/nextjs/server";
+// import { clerkClient } from "@clerk/nextjs/server";
 
 const fetchPosts = async (): Promise<Blog[]> => {
   const response = await fetch(
@@ -16,12 +16,12 @@ const fetchPosts = async (): Promise<Blog[]> => {
   return data;
 };
 
-export const fetchAuthor = async (userId: string) => {
-  const clerk = await clerkClient();
-  const response = await clerk.users.getUser(userId);
-  // console.log(response);
-  return response.firstName || "Unknown Author";
-};
+// export const fetchAuthor = async (userId: string) => {
+//   const clerk = await clerkClient();
+//   const response = await clerk.users.getUser(userId);
+//   // console.log(response);
+//   return response.firstName || "Unknown Author";
+// };
 
 const Page = async () => {
   const posts = await fetchPosts();
@@ -57,7 +57,7 @@ const Page = async () => {
               .split(",")
               .map((t) => t.trim())
               .filter((t) => t.length > 0),
-            author: await fetchAuthor(post.authorId),
+            author: "Gautam",
             date: new Date(post.createdAt).toLocaleDateString("en-US", {
               day: "numeric",
               month: "long",

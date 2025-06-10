@@ -1,5 +1,5 @@
 import { Blog } from "@prisma/client";
-import { fetchAuthor } from "@/app/page";
+// import { fetchAuthor } from "@/app/page";
 import Image from "next/image";
 const fetchPost = async (id: string): Promise<Blog | null> => {
   try {
@@ -27,9 +27,9 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <div className="md:max-w-4xl max-w-full mx-auto p-4 flex flex-col gap-4">
-      <h1 className="text-4xl font-bold">{post.title}</h1>
+      <h1 className="text-4xl font-bold">{post.title.slice(1, 50)}</h1>
       <div className="flex gap-2">
-        <p className="text-muted-foreground">By {fetchAuthor(post.authorId)}</p>
+        <p className="text-muted-foreground">By Gautam</p>
         <span className="text-muted-foreground">•</span>
         <p className="text-muted-foreground">
           {new Date(post.createdAt).toLocaleDateString("en-US", {
@@ -46,7 +46,7 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         height={400}
         className="rounded-lg object-cover w-full h-[300px]"
       />
-      <p className="text-muted-foreground">{post.content}</p>
+      <p className="text-muted-foreground">{post.content.slice(1, 100)}</p>
     </div>
   );
 };
