@@ -9,12 +9,12 @@ import {
 
 interface BlogPostCardProps {
   post: {
-    coverPic: string;
     title: string;
     description: string;
+    coverImage: string;
+    tags: string[];
     date: string;
     author: string;
-    tags: string[];
   };
 }
 
@@ -23,7 +23,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
     <Card className="overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20">
       <CardHeader className="p-0">
         <Image
-          src={post.coverPic}
+          src={post.coverImage}
           alt={post.title}
           width={600}
           height={400}
