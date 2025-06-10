@@ -1,5 +1,5 @@
 import { SignedIn } from "@clerk/nextjs";
-import Link from "next/link";
+import TransitionLink from "@/components/TransitionLink";
 import BlogPostCard from "@/components/BlogPostCard";
 import Footer from "@/components/Footer";
 import type { Blog } from "@prisma/client";
@@ -35,12 +35,12 @@ const Page = async () => {
           Your source for technical deep dives and tutorials.
         </p>
         <SignedIn>
-          <Link
+          <TransitionLink
             href="/write"
             className="inline-block mt-4 px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
           >
             Write a Post
-          </Link>
+          </TransitionLink>
         </SignedIn>
       </header>
 
@@ -66,15 +66,10 @@ const Page = async () => {
           };
 
           return (
-            <Link
-              key={post.id}
-              href={`/posts/${post.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <TransitionLink key={post.id} href={`/posts/${post.id}`}>
               {" "}
               <BlogPostCard key={post.id} post={postForCard} />{" "}
-            </Link>
+            </TransitionLink>
           );
         })}
       </main>
