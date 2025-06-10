@@ -16,7 +16,7 @@ const fetchPosts = async (): Promise<Blog[]> => {
 export const fetchAuthor = async (userId: string) => {
   const clerk = await clerkClient();
   const response = await clerk.users.getUser(userId);
-  console.log(response);
+  // console.log(response);
   return response.firstName || "Unknown Author";
 };
 
