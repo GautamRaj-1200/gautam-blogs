@@ -14,8 +14,9 @@ const fetchPost = async (id: string): Promise<Blog | null> => {
   }
 };
 
-const PostPage = async ({ params }: { params: { id: string } }) => {
-  const post = await fetchPost(params.id);
+const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+  const post = await fetchPost(id);
 
   if (!post) {
     return <div className="text-center py-12">Post not found.</div>;
