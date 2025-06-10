@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import Header from "@/components/Header";
+import PageTransitionEffect from "@/components/PageTransitionEffect";
 
 const ubuntuMono = Ubuntu_Mono({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <body className={ubuntuMono.className}>
           <Header />
+          <PageTransitionEffect />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
