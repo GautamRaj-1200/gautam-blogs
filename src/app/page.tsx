@@ -6,9 +6,12 @@ import type { Blog } from "@prisma/client";
 import { clerkClient } from "@clerk/nextjs/server";
 
 const fetchPosts = async (): Promise<Blog[]> => {
-  const response = await fetch("http://localhost:3000/api/v1/posts", {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts`,
+    {
+      cache: "no-store",
+    }
+  );
   const data = await response.json();
   return data;
 };

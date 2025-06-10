@@ -3,9 +3,12 @@ import { fetchAuthor } from "@/app/page";
 import Image from "next/image";
 const fetchPost = async (id: string): Promise<Blog | null> => {
   try {
-    const response = await fetch(`http://localhost:3000/api/v1/posts/${id}`, {
-      cache: "no-store",
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts/${id}`,
+      {
+        cache: "no-store",
+      }
+    );
     if (!response.ok) return null;
     return await response.json();
   } catch (error) {
