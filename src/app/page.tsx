@@ -48,7 +48,7 @@ const Page = async () => {
         {posts.map(async (post) => {
           const postForCard = {
             id: post.id,
-            title: post.title,
+            title: post.title.substring(0, 50),
             description: post.content.substring(0, 150) + "...",
             coverImage:
               post.coverImage ||
