@@ -13,7 +13,7 @@ const fetchPosts = async (): Promise<Blog[]> => {
   return data;
 };
 
-const fetchAuthor = async (userId: string) => {
+export const fetchAuthor = async (userId: string) => {
   const clerk = await clerkClient();
   const response = await clerk.users.getUser(userId);
   console.log(response);
@@ -55,10 +55,24 @@ const Page = async () => {
               .map((t) => t.trim())
               .filter((t) => t.length > 0),
             author: await fetchAuthor(post.authorId),
-            date: new Date(post.createdAt).toLocaleDateString(),
+            date: new Date(post.createdAt).toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }),
           };
 
-          return <BlogPostCard key={post.id} post={postForCard} />;
+          return (
+            <Link
+              key={post.id}
+              href={`/posts/${post.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {" "}
+              <BlogPostCard key={post.id} post={postForCard} />{" "}
+            </Link>
+          );
         })}
       </main>
 

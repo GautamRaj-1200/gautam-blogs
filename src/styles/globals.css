@@ -117,13 +117,15 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground min-h-screen;
     background-image: linear-gradient(
       to bottom right,
       #000000,
       #1a001a,
       #000000
     );
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
 
   .dark body {
