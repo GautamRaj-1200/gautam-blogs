@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-
+import WysiwygEditor from "@/components/WysiwygEditor";
 const WritePage = () => {
   const { userId } = useAuth();
   const router = useRouter();
@@ -73,8 +73,8 @@ const WritePage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Write a new blog post</h1>
-      <form onSubmit={handleSubmit}>
+      {/* <h1 className="text-3xl font-bold mb-4">Write a new blog post</h1> */}
+      <form onSubmit={handleSubmit} className="mt-6">
         <div className="mb-4">
           <label htmlFor="title" className="block text-lg font-medium mb-2">
             Title
@@ -106,20 +106,6 @@ const WritePage = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="content" className="block text-lg font-medium mb-2">
-            Content
-          </label>
-          <textarea
-            id="content"
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            rows={15}
-            className="w-full p-2 border rounded bg-background"
-          ></textarea>
-        </div>
-        <div className="mb-4">
           <label htmlFor="tags" className="block text-lg font-medium mb-2">
             Tags (comma-separated)
           </label>
@@ -135,6 +121,21 @@ const WritePage = () => {
           {tagsError && (
             <p className="text-red-500 text-sm mt-1">{tagsError}</p>
           )}
+        </div>
+        <div className="mb-4">
+          {/* <label htmlFor="content" className="block text-lg font-medium mb-2">
+            Content
+          </label>
+          <textarea
+            id="content"
+            name="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+            rows={15}
+            className="w-full p-2 border rounded bg-background"
+          ></textarea> */}
+          <WysiwygEditor setContent={setContent} />
         </div>
         <button
           type="submit"

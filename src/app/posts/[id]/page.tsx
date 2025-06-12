@@ -46,7 +46,10 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         height={400}
         className="rounded-lg object-cover w-full h-[300px]"
       />
-      <p className="text-muted-foreground">{post.content}</p>
+      <div
+        className="prose"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </div>
   );
 };
