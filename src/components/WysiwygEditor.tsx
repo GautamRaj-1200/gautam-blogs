@@ -117,29 +117,99 @@ const WysiwygEditor = ({
     setIsOkDisabled(e.target.value.trim() === "");
   };
 
-  const handleImageUpload = () => {
+  const handleImageUpload = async () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "image/*";
     fileInput.style.display = "none";
 
-    fileInput.onchange = () => {
+    fileInput.onchange = async () => {
       const file = fileInput.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = document.createElement("img");
-          if (e.target?.result) {
-            img.src = e.target.result as string;
-          }
-          img.alt = "Uploaded image";
-          img.className = "max-w-full rounded-md";
-          textContainerRef.current?.appendChild(img);
-        };
-        reader.readAsDataURL(file);
+      if (!file) {
+        if (fileInput.parentNode) {
+          document.body.removeChild(fileInput);
+        }
+        return;
       }
-      document.body.removeChild(fileInput);
+
+      const placeholderId = `upload-${Date.now()}`;
+      const placeholder = document.createElement("div");
+      placeholder.id = placeholderId;
+      placeholder.textContent = "Uploading image...";
+      placeholder.className =
+        "text-gray-400 italic p-2 bg-gray-700 rounded-md animate-pulse";
+      textContainerRef.current?.appendChild(placeholder);
+
+      try {
+        const getSignedUrlResponse = await fetch("/api/uploads", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fileName: file.name,
+            fileType: file.type,
+          }),
+        });
+
+        if (!getSignedUrlResponse.ok) {
+          throw new Error("Failed to get signed URL.");
+        }
+
+        const { signedUrl, publicUrl } = await getSignedUrlResponse.json();
+
+        const uploadToS3Response = await fetch(signedUrl, {
+          method: "PUT",
+          body: file,
+          headers: {
+            "Content-Type": file.type,
+          },
+        });
+
+        if (!uploadToS3Response.ok) {
+          throw new Error("Failed to upload image to S3.");
+        }
+
+        const currentPlaceholder = document.getElementById(placeholderId);
+        if (!currentPlaceholder) return;
+
+        const division = document.createElement("div");
+        division.className = "flex justify-between items-start gap-2 mb-2";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.textContent = "Del";
+        deleteBtn.className =
+          "px-2 py-1 text-xs bg-red-600 hover:bg-red-700 text-white font-bold rounded-md flex-shrink-0";
+        deleteBtn.onclick = () => division.remove();
+
+        const img = document.createElement("img");
+        img.src = publicUrl;
+        img.alt = file.name;
+        img.className = "max-w-full rounded-md";
+
+        division.appendChild(img);
+        division.appendChild(deleteBtn);
+
+        currentPlaceholder.replaceWith(division);
+      } catch (error) {
+        console.error("Image upload failed:", error);
+        const failedPlaceholder = document.getElementById(placeholderId);
+        if (failedPlaceholder) {
+          failedPlaceholder.textContent =
+            "Image upload failed. Please try again.";
+          failedPlaceholder.className = "text-red-500 italic p-2";
+          setTimeout(() => {
+            failedPlaceholder.remove();
+          }, 3000);
+        }
+      } finally {
+        if (fileInput.parentNode) {
+          document.body.removeChild(fileInput);
+        }
+      }
     };
+
     document.body.appendChild(fileInput);
     fileInput.click();
   };

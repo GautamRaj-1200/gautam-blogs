@@ -8,6 +8,10 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  const posts = await prisma.blog.findMany();
+  const posts = await prisma.blog.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   return NextResponse.json(posts, { status: 201 });
 }
