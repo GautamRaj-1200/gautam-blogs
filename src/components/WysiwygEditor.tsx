@@ -67,6 +67,7 @@ const WysiwygEditor = ({
     division.className = "flex justify-between items-center gap-2 mb-2";
 
     const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
     deleteBtn.textContent = "Del";
     deleteBtn.className =
       "px-2 py-1 text-xs bg-red-600 hover:bg-red-700 text-white font-bold rounded-md";
@@ -136,18 +137,24 @@ const WysiwygEditor = ({
 
   const handleSave = async () => {
     if (textContainerRef.current) {
-      textContainerRef.current
+      const clonedNode = textContainerRef.current.cloneNode(
+        true
+      ) as HTMLElement;
+
+      clonedNode.querySelectorAll("div").forEach((element) => {
+        (element as HTMLElement).removeAttribute("class");
+      });
+      clonedNode
         .querySelectorAll("[contentEditable=true]")
         .forEach((element) => {
           (element as HTMLElement).contentEditable = "false";
         });
-      textContainerRef.current.querySelectorAll("button").forEach((element) => {
-        (element as HTMLButtonElement).disabled = true;
-        (element as HTMLElement).style.display = "none";
+      clonedNode.querySelectorAll("button").forEach((element) => {
+        (element as HTMLButtonElement).remove();
       });
 
       const editorData = {
-        content: textContainerRef.current.innerHTML,
+        content: clonedNode.innerHTML,
       };
 
       setContent(editorData.content);
@@ -168,18 +175,21 @@ const WysiwygEditor = ({
     <div>
       <div className="flex flex-wrap gap-2 justify-center p-4 w-full top-0 bg-gray-800 z-10">
         <button
+          type="button"
           className={baseButtonClass}
           onClick={() => handlePromptAndInsert("h1", "Enter heading 1...")}
         >
           H1
         </button>
         <button
+          type="button"
           className={baseButtonClass}
           onClick={() => handlePromptAndInsert("h2", "Enter heading 2...")}
         >
           H2
         </button>
         <button
+          type="button"
           className={baseButtonClass}
           onClick={() => handlePromptAndInsert("h3", "Enter heading 3...")}
         >
@@ -187,6 +197,7 @@ const WysiwygEditor = ({
         </button>
 
         <button
+          type="button"
           className={baseButtonClass}
           onClick={() => handlePromptAndInsert("p", "Enter paragraph...")}
         >
@@ -194,6 +205,7 @@ const WysiwygEditor = ({
         </button>
 
         <button
+          type="button"
           className={baseButtonClass}
           onClick={() =>
             handlePromptAndInsert(
@@ -213,6 +225,7 @@ const WysiwygEditor = ({
           List
         </button>
         <button
+          type="button"
           className={baseButtonClass}
           onClick={() =>
             handlePromptAndInsert(
@@ -233,6 +246,7 @@ const WysiwygEditor = ({
         </button>
 
         <button
+          type="button"
           className={baseButtonClass}
           onClick={() => handlePromptAndInsert("hr", "")}
         >
@@ -240,6 +254,7 @@ const WysiwygEditor = ({
         </button>
 
         <button
+          type="button"
           className={baseButtonClass}
           onClick={() =>
             handlePromptAndInsert("pre", "Enter code...", (el, value) => {
@@ -254,24 +269,45 @@ const WysiwygEditor = ({
           Code
         </button>
 
-        <button className={baseButtonClass} onClick={handleImageUpload}>
+        <button
+          type="button"
+          className={baseButtonClass}
+          onClick={handleImageUpload}
+        >
           Image
         </button>
 
-        <button className={baseButtonClass} onClick={() => format("B")}>
+        <button
+          type="button"
+          className={baseButtonClass}
+          onClick={() => format("B")}
+        >
           <strong>B</strong>
         </button>
-        <button className={baseButtonClass} onClick={() => format("I")}>
+        <button
+          type="button"
+          className={baseButtonClass}
+          onClick={() => format("I")}
+        >
           <em>I</em>
         </button>
-        <button className={baseButtonClass} onClick={() => format("U")}>
+        <button
+          type="button"
+          className={baseButtonClass}
+          onClick={() => format("U")}
+        >
           <u>U</u>
         </button>
-        <button className={baseButtonClass} onClick={() => format("HL")}>
+        <button
+          type="button"
+          className={baseButtonClass}
+          onClick={() => format("HL")}
+        >
           <span>HL</span>
         </button>
 
         <button
+          type="button"
           className={`${baseButtonClass} bg-red-600 hover:bg-red-700`}
           onClick={handleClear}
         >
@@ -297,6 +333,7 @@ const WysiwygEditor = ({
           />
           <div className="flex gap-2">
             <button
+              type="button"
               className={`${baseButtonClass} bg-green-600 hover:bg-green-700`}
               onClick={handlePromptOk}
               disabled={isOkDisabled}
@@ -304,6 +341,7 @@ const WysiwygEditor = ({
               OK
             </button>
             <button
+              type="button"
               className={`${baseButtonClass} bg-red-600 hover:bg-red-700`}
               onClick={handlePromptCancel}
             >
@@ -314,6 +352,7 @@ const WysiwygEditor = ({
       )}
 
       <button
+        type="button"
         className={`${baseButtonClass} block mx-auto my-5 bg-green-600 hover:bg-green-700`}
         onClick={handleSave}
       >
