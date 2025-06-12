@@ -75,11 +75,20 @@ const WysiwygEditor = ({
 
     const el = document.createElement(tagName);
     if (tagName === "h1") {
-      el.className = "text-4xl font-bold";
+      el.className = "text-5xl font-bold";
     } else if (tagName === "h2") {
-      el.className = "text-3xl font-bold";
+      el.className = "text-4xl font-bold";
     } else if (tagName === "h3") {
-      el.className = "text-2xl font-bold";
+      el.className = "text-3xl font-bold";
+    } else if (tagName === "p") {
+      el.className = "text-2xl";
+    } else if (tagName === "ul") {
+      el.className = "list-inside list-disc";
+    } else if (tagName === "ol") {
+      el.className = "list-decimal list-inside";
+    } else if (tagName === "pre") {
+      el.className =
+        "bg-gray-900 text-gray-400 p-2.5 rounded whitespace-pre-wrap text-lg block";
     }
     if (transformFn) {
       transformFn(el, promptValue);
