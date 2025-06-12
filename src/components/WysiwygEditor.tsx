@@ -236,6 +236,15 @@ const WysiwygEditor = ({
         content: clonedNode.innerHTML,
       };
 
+      // Preserve whitespace in code blocks
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = editorData.content;
+      tempDiv.querySelectorAll("pre").forEach((pre) => {
+        pre.style.whiteSpace = "pre";
+        pre.style.tabSize = "4";
+      });
+      editorData.content = tempDiv.innerHTML;
+
       setContent(editorData.content);
       console.log(editorData.content);
     }
@@ -338,10 +347,12 @@ const WysiwygEditor = ({
           onClick={() =>
             handlePromptAndInsert("pre", "Enter code...", (el, value) => {
               const code = document.createElement("code");
-              code.textContent = value;
+              // Replace tabs with 4 spaces for consistent display
+              const formattedValue = value.replace(/\t/g, "    ");
+              code.textContent = formattedValue;
               el.appendChild(code);
               el.className =
-                "bg-gray-900 text-gray-400 p-2.5 rounded whitespace-pre-wrap text-lg block";
+                "bg-gray-900 text-gray-400 p-2.5 rounded whitespace-pre text-lg block font-mono";
             })
           }
         >
