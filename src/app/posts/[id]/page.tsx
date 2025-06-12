@@ -43,13 +43,15 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           })}
         </p>
       </div>
-      <Image
-        src={post.coverImage || ""}
-        alt={post.title}
-        width={400}
-        height={400}
-        className="rounded-lg object-cover w-full h-[300px]"
-      />
+      {post.coverImage && (
+        <Image
+          src={post.coverImage}
+          alt={post.title}
+          width={400}
+          height={400}
+          className="rounded-lg object-cover w-full h-[300px]"
+        />
+      )}
       <div
         className={`prose ${spectral.className}`}
         dangerouslySetInnerHTML={{ __html: post.content }}

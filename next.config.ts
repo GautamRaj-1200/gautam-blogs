@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         protocol: "https",
       },
+      {
+        hostname: "gautam-blogs.s3.amazonaws.com",
+        protocol: "https",
+      },
     ],
   },
 };
