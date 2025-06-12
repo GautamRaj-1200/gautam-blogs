@@ -1,5 +1,9 @@
 import { Blog } from "@prisma/client";
 // import { fetchAuthor } from "@/app/page";
+import { Spectral } from "next/font/google";
+
+const spectral = Spectral({ subsets: ["latin"], weight: "400" });
+
 import Image from "next/image";
 const fetchPost = async (id: string): Promise<Blog | null> => {
   try {
@@ -46,7 +50,10 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         height={400}
         className="rounded-lg object-cover w-full h-[300px]"
       />
-      <p className="text-muted-foreground">{post.content}</p>
+      <div
+        className={`prose ${spectral.className}`}
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </div>
   );
 };

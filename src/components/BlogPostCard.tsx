@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { stripHtml } from "@/lib/utils";
 
 interface BlogPostCardProps {
   post: {
@@ -33,7 +34,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
       <CardContent className="p-6">
         <CardTitle className="text-2xl font-bold mb-2">{post.title}</CardTitle>
         <CardDescription className="text-muted-foreground mb-4">
-          {post.description}
+          {stripHtml(post.description)}
         </CardDescription>
         <div className="flex items-center text-sm text-muted-foreground mb-4">
           <span>{post.author}</span>
